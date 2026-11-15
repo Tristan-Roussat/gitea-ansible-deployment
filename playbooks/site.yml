@@ -1,0 +1,39 @@
+- name: Configuration du serveur Gitea
+  hosts: gitea
+  become: true
+
+  tasks:
+    - name: Installation des paquets
+      ansible.builtin.apt:
+        update_cache: true
+        name:
+          - git
+          - ufw
+          - vim
+          - curl
+          - ca-certificates
+        state: present
+
+    # Configuration du firewall
+    - name: Autoriser SSH
+      community.general.ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Autoriser HTTP
+      community.general.ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Autoriser HTTPS
+      community.general.ufw:
+        rule: allow
+        port: '443'
+        proto: tcp
+
+    # Activation du firewall
+    - name: Activer UFW
+      community.general.ufw:
+        state: enabled
