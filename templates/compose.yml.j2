@@ -1,0 +1,11 @@
+services:
+  gitea:
+    image: gitea/gitea:{{ gitea_version }}
+    container_name: gitea
+    ports:
+      - "{{ gitea_port }}:3000"
+    volumes:
+      - gitea_data:/data
+
+volumes:
+  gitea_data:

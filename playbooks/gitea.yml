@@ -1,0 +1,24 @@
+- name: Déploiement de Gitea
+  hosts: gitea
+  become: true
+
+  vars_files:
+      - ../group_vars/all/vars.yml
+
+  tasks:
+    - name: Créer le répertoire Gitea
+      ansible.builtin.file:
+        path: /opt/gitea
+        state: directory
+        mode: '0755'
+
+    - name: Générer le fichier Docker Compose
+      ansible.builtin.template:
+        src: ../templates/compose.yml.j2
+        dest: /opt/gitea/compose.yml
+        mode: '0644'
+
+    - name: Démarrer Gitea avec Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: /opt/gitea
+        state: present

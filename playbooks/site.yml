@@ -11,7 +11,7 @@
           - ufw
           - vim
           - curl
-          -ca-certificates
+          - ca-certificates
         state: present
 
     # Configuration du firewall
