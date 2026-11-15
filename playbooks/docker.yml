@@ -2,6 +2,10 @@
   hosts: gitea
   become: true
 
+  vars_files:
+      - ../group_vars/all/vars.yml
+      - ../group_vars/gitea/vault.yml
+      
   tasks:
     - name: Télécharger la clé GPG de Docker
       ansible.builtin.get_url:
