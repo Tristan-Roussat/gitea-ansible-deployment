@@ -1,0 +1,28 @@
+- name: Sauvegarde de Gitea
+  hosts: gitea
+  become: true
+
+  vars_files:
+    - ../group_vars/gitea/vault.yml
+
+  tasks:
+    - name: Créer le dossier de sauvegarde
+      ansible.builtin.file:
+        path: /opt/backups/gitea
+        state: directory
+        mode: '0700'
+
+    - name: Arrêter Gitea
+      ansible.builtin.command:
+        cmd: docker compose stop
+        chdir: /opt/gitea
+
+    - name: Sauvegarder les données de Gitea
+      ansible.builtin.command:
+        cmd: >-
+          docker run --rm --volumes-from gitea -v /opt/backups/gitea:/backup alpine tar czf /backup/gitea-{{ ansible_date_time.iso8601_basic_short }}.tar.gz -C /data .
+
+    - name: Redémarrer Gitea
+      ansible.builtin.command:
+        cmd: docker compose up -d
+        chdir: /opt/gitea
