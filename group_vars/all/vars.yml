@@ -1,3 +1,5 @@
 gitea_version: "28.4.0"
 gitea_port: 3000
 nginx_port: 80
+gitea_domain:
+gitea_url: "http://127.0.0.1:8083/"
