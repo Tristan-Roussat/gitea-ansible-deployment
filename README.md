@@ -16,7 +16,7 @@ Déploiement et configuration automatisés d'un serveur Gitea sur Ubuntu Server 
 - Automatisation : Ansible
 - Conteneurisation : Docker
 - Orchestration : Docker Compose
-<!-- - Reverse proxy : NGINX -->
+- Reverse proxy : NGINX
 
 ## Fonctionnalités
 
@@ -25,7 +25,8 @@ Déploiement et configuration automatisés d'un serveur Gitea sur Ubuntu Server 
 - Déploiement de Gitea avec Docker Compose
 - Utilisation de templates Jinja2 pour la configuration
 - Sécurisation du serveur avec UFW et Ansible Vault
-<!-- - Configuration du reverse proxy NGINX -->
+- Sauvegarde des données de Gitea
+- Configuration du reverse proxy NGINX
 
 ## Prérequis
 

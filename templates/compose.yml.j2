@@ -2,6 +2,7 @@ services:
   gitea:
     image: gitea/gitea:{{ gitea_version }}
     container_name: gitea
+    restart: always
     ports:
       - "{{ gitea_port }}:3000"
     volumes:

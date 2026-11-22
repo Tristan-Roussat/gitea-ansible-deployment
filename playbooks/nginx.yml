@@ -1,0 +1,48 @@
+- name: Mise en place d'un reverse proxy avec NGINX
+  hosts: gitea
+  become: true
+
+  vars_files:
+      - ../group_vars/all/vars.yml
+      - ../group_vars/gitea/vault.yml
+
+  tasks:
+    - name: Installation des paquets
+      ansible.builtin.apt:
+        update_cache: true
+        name:
+          - nginx
+        state: present
+
+    - name: Démarrer et activer le service NGINX
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Déployer la configuration NGINX
+      ansible.builtin.template:
+        src: ../templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/gitea.conf
+        mode: '0644'
+        
+    - name: Activer le site Gitea
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/gitea.conf
+        dest: /etc/nginx/sites-enabled/gitea.conf
+        state: link
+
+    - name: Désactiver le site par défaut
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Vérifier la configuration NGINX
+      ansible.builtin.command:
+        cmd: nginx -t
+      changed_when: false
+
+    - name: Recharger NGINX
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
