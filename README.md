@@ -30,10 +30,16 @@ Déploiement et configuration automatisés d'un serveur Gitea sur Ubuntu Server 
 
 ## Prérequis
 
-Pour lancer l'application, les outils suivants doivent être installés :
+Pour déployer le projet, les outils suivants doivent être installés :
 
+- Git
+- Accès SSH à un serveur Ubuntu 
 - Ansible
-- Accès SSH à un serveur Ubuntu
+
+Installer la collection Ansible nécessaire :
+```bash
+ansible-galaxy collection install community.docker
+```
 
 Le serveur cible doit disposer d'Ubuntu Server. L'installation de Docker et de ses dépendances est automatisée par Ansible.
 
@@ -49,6 +55,19 @@ Lancer les playbooks pour configurer le serveur et déployer Gitea :
 ansible-playbook -i inventory/hosts.ini playbooks/site.yml --ask-vault-pass
 ansible-playbook -i inventory/hosts.ini playbooks/docker.yml --ask-vault-pass
 ansible-playbook -i inventory/hosts.ini playbooks/gitea.yml --ask-vault-pass
+ansible-playbook -i inventory/hosts.ini playbooks/nginx.yml --ask-vault-pass
+```
+
+Sinon, on peut lancer tous les playbooks de déploiement en une commande :
+
+```bash
+ansible-playbook -i inventory/hosts.ini playbooks/deploy.yml --ask-vault-pass
+```
+
+On peut aussi faire une sauvegarde avec la commande : 
+
+```bash
+ansible-playbook -i inventory/hosts.ini playbooks/backup.yml --ask-vault-pass
 ```
 
 Une fois le déploiement terminé, Gitea est accessible depuis un navigateur à l'adresse configurée.

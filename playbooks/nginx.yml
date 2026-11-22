@@ -25,6 +25,7 @@
         src: ../templates/nginx.conf.j2
         dest: /etc/nginx/sites-available/gitea.conf
         mode: '0644'
+      notify: Recharger NGINX
         
     - name: Activer le site Gitea
       ansible.builtin.file:
@@ -36,12 +37,14 @@
       ansible.builtin.file:
         path: /etc/nginx/sites-enabled/default
         state: absent
+      notify: Recharger NGINX
 
     - name: Vérifier la configuration NGINX
       ansible.builtin.command:
         cmd: nginx -t
       changed_when: false
-
+  
+  handlers:
     - name: Recharger NGINX
       ansible.builtin.service:
         name: nginx
